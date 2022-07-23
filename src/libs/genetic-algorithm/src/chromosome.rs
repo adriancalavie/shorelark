@@ -1,0 +1,156 @@
+use std::ops::Index;
+
+#[derive(Clone, Debug)]
+pub struct Chromosome {
+    genes: Vec<f32>,
+}
+
+impl Chromosome {
+    /// Returns the length of this [`Chromosome`].
+    pub fn len(&self) -> usize {
+        self.genes.len()
+    }
+
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    /// Returns the iter of this [`Chromosome`].
+    pub fn iter(&self) -> impl Iterator<Item = &f32> {
+        self.genes.iter()
+    }
+
+    /// Returns the iter of this [`Chromosome`].
+    pub fn iter_mut(&mut self) -> impl Iterator<Item = &mut f32> {
+        self.genes.iter_mut()
+    }
+}
+
+impl Index<usize> for Chromosome {
+    type Output = f32;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.genes[index]
+    }
+}
+
+impl FromIterator<f32> for Chromosome {
+    fn from_iter<T: IntoIterator<Item = f32>>(iter: T) -> Self {
+        Self {
+            genes: iter.into_iter().collect(),
+        }
+    }
+}
+
+impl IntoIterator for Chromosome {
+    type Item = f32;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.genes.into_iter()
+    }
+}
+
+#[cfg(test)]
+impl PartialEq for Chromosome {
+    fn eq(&self, other: &Self) -> bool {
+        approx::relative_eq!(self.genes.as_slice(), other.genes.as_slice(),)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Chromosome;
+
+    fn get_test_chromosome() -> Chromosome {
+        Chromosome {
+            genes: vec![3.0, 1.0, 2.0],
+        }
+    }
+
+    #[test]
+    fn test_chromosome_length() {
+        assert_eq!(get_test_chromosome().len(), 3);
+    }
+
+    mod iter {
+        use crate::chromosome::tests::get_test_chromosome;
+
+        #[test]
+        fn test_chromosome_iterator() {
+            let chromosome = get_test_chromosome();
+            let genes: Vec<_> = chromosome.iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], &3.0);
+            assert_eq!(genes[1], &1.0);
+            assert_eq!(genes[2], &2.0);
+        }
+    }
+
+    mod iter_mut {
+        use crate::chromosome::tests::get_test_chromosome;
+
+        #[test]
+        fn test_chromosome_iterator() {
+            let mut chromosome = get_test_chromosome();
+
+            chromosome.iter_mut().for_each(|gene| {
+                *gene *= 10.0;
+            });
+
+            let genes: Vec<_> = chromosome.iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], &30.0);
+            assert_eq!(genes[1], &10.0);
+            assert_eq!(genes[2], &20.0);
+        }
+    }
+
+    mod index {
+        use super::*;
+
+        #[test]
+        fn test_chromosome_index() {
+            let chromosome = Chromosome {
+                genes: vec![3.0, 1.0, 2.0],
+            };
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
+        }
+    }
+
+    mod from_iterator {
+        use crate::chromosome::Chromosome;
+
+        #[test]
+        fn test_chromosome_collect() {
+            let chromosome: Chromosome = vec![3.0, 1.0, 2.0].into_iter().collect();
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
+        }
+    }
+    mod into_iterator {
+        use crate::chromosome::Chromosome;
+
+        #[test]
+        fn test() {
+            let chromosome = Chromosome {
+                genes: vec![3.0, 1.0, 2.0],
+            };
+
+            let genes: Vec<_> = chromosome.into_iter().collect();
+
+            assert_eq!(genes.len(), 3);
+            assert_eq!(genes[0], 3.0);
+            assert_eq!(genes[1], 1.0);
+            assert_eq!(genes[2], 2.0);
+        }
+    }
+}
