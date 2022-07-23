@@ -36,7 +36,7 @@ mod tests {
 
     use crate::{
         individual::{Individual, TestIndividual},
-        selection_methods::{RouletteWheelSelection, SelectionMethod},
+        selection::{RouletteWheelSelection, SelectionMethod},
     };
 
 

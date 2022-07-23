@@ -2,7 +2,7 @@ use rand::RngCore;
 
 use crate::{
     crossover::CrossoverMethod, individual::Individual, mutation::MutationMethod,
-    selection_methods::SelectionMethod,
+    selection::SelectionMethod,
 };
 
 pub struct GeneticAlgorithm<S, C, M> {
@@ -55,7 +55,7 @@ where
 mod tests {
     use crate::{
         crossover::UniformCrossover, individual::TestIndividual, mutation::GaussianMutation,
-        selection_methods::RouletteWheelSelection,
+        selection::RouletteWheelSelection,
     };
 
     use super::*;
