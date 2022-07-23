@@ -98,10 +98,10 @@ mod tests {
         }
 
         let expected_population = vec![
-            create_individual(&[0.44769490, 2.0648358, 4.3058133]),
-            create_individual(&[1.21268670, 1.5538777, 2.8869110]),
-            create_individual(&[1.06176780, 2.2657390, 4.4287640]),
-            create_individual(&[0.95909685, 2.4618788, 4.0247330]),
+            create_individual(&[0.447_694_9, 2.0648358, 4.3058133]),
+            create_individual(&[1.212_686_7, 1.5538777, 2.886_911]),
+            create_individual(&[1.061_767_8, 2.265_739, 4.428_764]),
+            create_individual(&[0.95909685, 2.4618788, 4.024_733]),
         ];
 
         assert_eq!(population, expected_population);
