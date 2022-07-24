@@ -1,4 +1,4 @@
-use crate::chromosome::Chromosome;
+use crate::*;
 
 pub trait Individual {
     fn fitness(&self) -> f32;

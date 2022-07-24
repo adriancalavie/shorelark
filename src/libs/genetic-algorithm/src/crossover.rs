@@ -1,6 +1,6 @@
 use rand::{Rng, RngCore};
 
-use crate::chromosome::Chromosome;
+use crate::*;
 
 pub trait CrossoverMethod {
     fn crossover(
@@ -16,6 +16,12 @@ pub struct UniformCrossover;
 impl UniformCrossover {
     pub fn new() -> Self {
         Self
+    }
+}
+
+impl Default for UniformCrossover {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

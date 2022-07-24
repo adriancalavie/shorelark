@@ -1,9 +1,6 @@
 use rand::RngCore;
 
-use crate::{
-    crossover::CrossoverMethod, individual::Individual, mutation::MutationMethod,
-    selection::SelectionMethod,
-};
+use crate::*;
 
 pub struct GeneticAlgorithm<S, C, M> {
     selection_method: S,
@@ -17,12 +14,12 @@ where
     C: CrossoverMethod,
     M: MutationMethod,
 {
-    pub fn evolve<I>(&mut self, population: &[I], rng: &mut dyn RngCore) -> Vec<I>
+    pub fn evolve<I>(&mut self, population: &[I], rng: &mut dyn RngCore) -> (Vec<I>, Statistics)
     where
         I: Individual,
     {
         assert!(!population.is_empty());
-        (0..population.len())
+        let new_population = (0..population.len())
             .map(|_| {
                 let parent_a = self
                     .selection_method
@@ -39,7 +36,11 @@ where
 
                 I::from_chromosome(child)
             })
-            .collect()
+            .collect();
+
+        let stats = Statistics::new(population);
+
+        (new_population, stats)
     }
 
     pub fn new(selection_method: S, crossover_method: C, mutation_method: M) -> Self {

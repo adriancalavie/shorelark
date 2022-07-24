@@ -1,6 +1,6 @@
 use rand::prelude::SliceRandom;
 
-use crate::individual::Individual;
+use crate::*;
 
 pub trait SelectionMethod {
     fn select<'a, I>(&mut self, population: &'a [I], rng: &mut dyn rand::RngCore) -> &'a I
@@ -13,6 +13,12 @@ pub struct RouletteWheelSelection;
 impl RouletteWheelSelection {
     pub fn new() -> Self {
         Self
+    }
+}
+
+impl Default for RouletteWheelSelection {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -38,8 +44,6 @@ mod tests {
         individual::{Individual, TestIndividual},
         selection::{RouletteWheelSelection, SelectionMethod},
     };
-
-
 
     #[test]
     fn test_selection_method() {

@@ -13,3 +13,9 @@ html {
     left: 0;
     top: 0;
 }
+
+#train {
+    position: absolute;
+    top: 0;
+    margin: 15px;
+}

@@ -1,6 +1,6 @@
 use rand::{Rng, RngCore};
 
-use crate::chromosome::Chromosome;
+use crate::*;
 
 pub trait MutationMethod {
     fn mutate(&self, child: &mut Chromosome, rng: &mut dyn RngCore);
